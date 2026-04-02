@@ -10,555 +10,258 @@
     <link rel="shortcut icon" href="loading.svg" type="image/x-icon">
     <style>
         :root {
-            --light-bg: #f5f5f5;
-            --light-text: #333;
-            --light-card: #ffffff;
-            --light-primary: #6a5acd;
-            --light-secondary: #6c757d;
-            --dark-bg: #1a1a2e;
-            --dark-text: #f8f9fa;
-            --dark-card: #16213e;
-            --dark-primary: #9370db;
-            --dark-secondary: #a7a7a7;
+            --light-bg: #f5f5f5; --light-text: #333; --light-card: #ffffff;
+            --light-primary: #6a5acd; --light-secondary: #6c757d;
+            --dark-bg: #1a1a2e; --dark-text: #f8f9fa; --dark-card: #16213e;
+            --dark-primary: #9370db; --dark-secondary: #a7a7a7;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
-            min-height: 100vh;
-            padding: 20px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        body.light-mode {
-            background-color: var(--light-bg);
-            color: var(--light-text);
-        }
-
-        body.dark-mode {
-            background-color: var(--dark-bg);
-            color: var(--dark-text);
-        }
-
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .app-title {
-            color: var(--light-primary);
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .dark-mode .app-title {
-            color: var(--dark-primary);
-        }
-
-        .quote-card {
-            background-color: var(--light-card);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            position: relative;
-            min-height: 200px;
-        }
-
-        .dark-mode .quote-card {
-            background-color: var(--dark-card);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .quote-text {
-            font-family: 'Hind', sans-serif;
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            padding-right: 30px;
-        }
-
-        .quote-author {
-            font-weight: 600;
-            text-align: right;
-            font-style: italic;
-        }
-
-        .light-mode .quote-author {
-            color: var(--light-primary);
-        }
-
-        .dark-mode .quote-author {
-            color: var(--dark-primary);
-        }
-
-        .festival-badge {
-            background-color: #e67e22 !important;
-            color: white !important;
-        }
-
-        .btn-primary {
-            background-color: var(--light-primary);
-            border: none;
-        }
-
-        .dark-mode .btn-primary {
-            background-color: var(--dark-primary);
-        }
-
-        .btn-secondary {
-            background-color: var(--light-secondary);
-            border: none;
-        }
-
-        .dark-mode .btn-secondary {
-            background-color: var(--dark-secondary);
-        }
-
-        .quote-icon {
-            font-size: 2rem;
-            opacity: 0.7;
-            margin-bottom: 15px;
-        }
-
-        .light-mode .quote-icon {
-            color: var(--light-primary);
-        }
-
-        .dark-mode .quote-icon {
-            color: var(--dark-primary);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        footer {
-            margin-top: 30px;
-            color: #e67e22;
-            /* color: var(--light-secondary); */
-        }
-
-        .dark-mode footer {
-            color: #e67e22;
-            /* color: var(--dark-secondary); */
-        }
-
-        /* Copy button styles */
-        .copy-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: var(--light-secondary);
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.2s;
-            font-size: 1.2rem;
-        }
-
-        .dark-mode .copy-btn {
-            color: var(--dark-secondary);
-        }
-
-        .copy-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .copy-btn.copied {
-            color: #28a745;
-            opacity: 1;
-        }
-
-        /* Loading spinner */
-        .loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-        }
-
-        /* Toast notification */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1100;
-        }
-
-        .toast {
-            background-color: rgba(40, 167, 69, 0.9);
-            color: white;
-            border: none;
-        }
-
-        /* Refresh confirmation modal */
-        .refresh-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
-
-        .refresh-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .dark-mode .refresh-content {
-            background-color: var(--dark-card);
-            color: var(--dark-text);
-        }
-
+        body { font-family: 'Poppins', sans-serif; transition: all 0.3s ease; min-height: 100vh; padding: 20px; user-select: none; }
+        body.light-mode { background-color: var(--light-bg); color: var(--light-text); }
+        body.dark-mode { background-color: var(--dark-bg); color: var(--dark-text); }
+        .theme-switcher { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+        .app-title { color: var(--light-primary); margin-bottom: 1rem; }
+        .dark-mode .app-title { color: var(--dark-primary); }
+        .quote-card { background-color: var(--light-card); border-radius: 12px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; margin-bottom: 20px; position: relative; min-height: 200px; }
+        .dark-mode .quote-card { background-color: var(--dark-card); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .quote-text { font-family: 'Hind', sans-serif; font-size: 1.3rem; line-height: 1.8; margin-bottom: 12px; padding-right: 30px; }
+        .quote-author { font-weight: 600; text-align: right; font-style: italic; margin-bottom: 2px; }
+        .light-mode .quote-author { color: var(--light-primary); }
+        .dark-mode .quote-author { color: var(--dark-primary); }
+        .quote-type { font-size: 0.82rem; text-align: right; font-weight: 500; opacity: 0.75; }
+        .light-mode .quote-type { color: var(--light-secondary); }
+        .dark-mode .quote-type { color: var(--dark-secondary); }
+        .festival-badge { background-color: #e67e22 !important; color: white !important; }
+        .time-badge { background-color: #27ae60 !important; color: white !important; }
+        .btn-primary { background-color: var(--light-primary); border: none; }
+        .dark-mode .btn-primary { background-color: var(--dark-primary); }
+        .btn-secondary { background-color: var(--light-secondary); border: none; }
+        .dark-mode .btn-secondary { background-color: var(--dark-secondary); }
+        .quote-icon { font-size: 2rem; opacity: 0.7; margin-bottom: 15px; }
+        .light-mode .quote-icon { color: var(--light-primary); }
+        .dark-mode .quote-icon { color: var(--dark-primary); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        footer { margin-top: 30px; color: #e67e22; }
+        .dark-mode footer { color: #e67e22; }
+        .copy-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--light-secondary); cursor: pointer; opacity: 0.5; transition: all 0.2s; font-size: 1.2rem; }
+        .dark-mode .copy-btn { color: var(--dark-secondary); }
+        .copy-btn:hover { opacity: 1; transform: scale(1.1); }
+        .copy-btn.copied { color: #28a745; opacity: 1; }
+        .loading-spinner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; }
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1100; }
+        .toast { background-color: rgba(40,167,69,0.9); color: white; border: none; }
+        .wishing-card { background: linear-gradient(135deg, #6a5acd22, #e67e2222); border-left: 4px solid #e67e22; border-radius: 10px; padding: 14px 20px; margin-bottom: 18px; font-family: 'Hind', sans-serif; font-size: 1.05rem; line-height: 1.6; display: flex; align-items: center; gap: 12px; }
+        .dark-mode .wishing-card { background: linear-gradient(135deg, #9370db22, #e67e2222); }
+        .wishing-icon { font-size: 1.6rem; flex-shrink: 0; }
         @media (max-width: 768px) {
-            .quote-card {
-                padding: 20px 15px;
-                min-height: 180px;
-            }
-            
-            .quote-text {
-                font-size: 1.1rem;
-                padding-right: 25px;
-            }
-            
-            .copy-btn {
-                top: 15px;
-                right: 15px;
-                font-size: 1rem;
-            }
-            
-            .loading-spinner {
-                width: 50px;
-                height: 50px;
-            }
+            .quote-card { padding: 20px 15px; min-height: 180px; }
+            .quote-text { font-size: 1.1rem; padding-right: 25px; }
+            .copy-btn { top: 15px; right: 15px; font-size: 1rem; }
         }
     </style>
 </head>
 <body class="light-mode">
-    <!-- Refresh Confirmation Modal -->
-    <div id="refresh-modal" class="refresh-modal" style="display: none;">
-        <div class="refresh-content">
-            <h3>Are you sure you want to refresh?</h3>
-            <p>You'll lose your current quote and settings.</p>
-            <div class="d-flex justify-content-center gap-3 mt-4">
-                <button id="confirm-refresh" class="btn btn-danger">Yes, Refresh</button>
-                <button id="cancel-refresh" class="btn btn-secondary">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <div class="theme-switcher">
         <button id="theme-toggle" class="btn btn-sm btn-outline-secondary">
             <i class="fas fa-moon"></i> Dark Mode
         </button>
     </div>
-
     <div class="container">
         <header class="text-center my-4">
             <h1 class="display-5 fw-bold app-title">Hindi Wisdom</h1>
             <div class="date-display mt-2">
                 <span id="current-date" class="badge bg-primary"></span>
-                <span id="current-festival" class="badge ms-2 festival-badge"></span>
+                <span id="time-greeting" class="badge ms-2 time-badge"></span>
+                <span id="current-festival" class="badge ms-2 festival-badge" style="display:none"></span>
             </div>
         </header>
-        
         <div class="row justify-content-center">
             <div class="col-lg-8">
+                <div id="wishing-card" class="wishing-card fade-in">
+                    <span id="wishing-icon" class="wishing-icon"></span>
+                    <span id="wishing-text"></span>
+                </div>
                 <div class="quote-card">
-                    <button class="copy-btn" title="Copy quote">
-                        <i class="far fa-copy"></i>
-                    </button>
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
+                    <button class="copy-btn" title="Copy quote"><i class="far fa-copy"></i></button>
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
                     <div class="quote-content">
-                        <p id="quote-text" class="quote-text">Welcome to Hindi Quotes | Festival Wisdom ...</p>
+                        <p id="quote-text" class="quote-text">Quote load ho raha hai...</p>
                         <p id="quote-author" class="quote-author"></p>
+                        <p id="quote-type" class="quote-type"></p>
                     </div>
                     <div class="quote-actions mt-4">
-                        <button id="new-quote" class="btn btn-primary me-3">
-                            <i class="fas fa-sync-alt me-2"></i>New Quote
-                        </button>
-                        <button id="share-quote" class="btn btn-secondary">
-                            <i class="fas fa-share-alt me-2"></i>Share
-                        </button>
+                        <button id="new-quote" class="btn btn-primary me-3"><i class="fas fa-sync-alt me-2"></i>New Quote</button>
+                        <button id="share-quote" class="btn btn-secondary"><i class="fas fa-share-alt me-2"></i>Share</button>
                     </div>
-                    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+                    <div id="loading-spinner" class="loading-spinner" style="display:none;">
                         <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="50" cy="50" r="35" stroke-width="10" stroke="#FF3D00" fill="none" stroke-dasharray="164.93" stroke-dashoffset="0">
-                            <animateTransform attributeName="transform" type="rotate"
-                              from="0 50 50" to="360 50 50"
-                              dur="1s" repeatCount="indefinite" />
-                            <animate attributeName="stroke" values="#FF3D00;#FFD600;#00E676;#00B0FF;#FF3D00" dur="4s" repeatCount="indefinite" />
+                            <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite"/>
+                            <animate attributeName="stroke" values="#FF3D00;#FFD600;#00E676;#00B0FF;#FF3D00" dur="4s" repeatCount="indefinite"/>
                           </circle>
                         </svg>
                     </div>
                 </div>
             </div>
         </div>
-        
         <footer class="text-center mt-4">
-            <p class="">By <a target="_blank" href="http://instagram.com/ohi_abhist">@ohi_abhist</a> | Hindi Quotes | Festival Wisdom </p>
+            <p>By <a target="_blank" href="http://instagram.com/ohi_abhist">@ohi_abhist</a> | Hindi Quotes | Festival Wisdom</p>
         </footer>
     </div>
 
-    <!-- Toast notification -->
     <div class="toast-container">
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body">
-                <i class="fas fa-check-circle me-2"></i> Quote copied to clipboard!
-            </div>
+            <div class="toast-body"><i class="fas fa-check-circle me-2"></i> Quote copied to clipboard!</div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Block inspect element
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-            if (e.key === 'F12' || 
-                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
-                (e.ctrlKey && e.key === 'u')) {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'u')) {
                 e.preventDefault();
-                alert('Developer tools are disabled for this application.');
+                alert('Developer tools are disabled.');
             }
         });
+        document.addEventListener('selectstart', e => e.preventDefault());
 
-        // Disable text selection
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Bootstrap Toast
+        document.addEventListener('DOMContentLoaded', function () {
             const toastEl = document.getElementById('toast');
-            const toast = new bootstrap.Toast(toastEl, {
-                autohide: true,
-                delay: 2000
-            });
+            const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 2000 });
 
-            // Refresh confirmation elements
-            const refreshModal = document.getElementById('refresh-modal');
-            const confirmRefresh = document.getElementById('confirm-refresh');
-            const cancelRefresh = document.getElementById('cancel-refresh');
-            let shouldRefresh = false;
-
-            // Handle refresh attempts
-            window.addEventListener('beforeunload', function(e) {
-                if (!shouldRefresh) {
-                    e.preventDefault();
-                    refreshModal.style.display = 'flex';
-                    return e.returnValue = 'Are you sure you want to leave?';
-                }
-            });
-
-            // Confirm refresh
-            confirmRefresh.addEventListener('click', function() {
-                shouldRefresh = true;
-                window.location.reload();
-            });
-
-            // Cancel refresh
-            cancelRefresh.addEventListener('click', function() {
-                refreshModal.style.display = 'none';
-            });
-
-            // Theme toggle functionality
+            // Theme toggle
             const themeToggle = document.getElementById('theme-toggle');
             themeToggle.addEventListener('click', () => {
                 document.body.classList.toggle('dark-mode');
-                const icon = themeToggle.querySelector('i');
                 if (document.body.classList.contains('dark-mode')) {
-                    icon.classList.replace('fa-moon', 'fa-sun');
                     themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
                 } else {
-                    icon.classList.replace('fa-sun', 'fa-moon');
                     themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
                 }
             });
 
-            // API endpoint for Hindi quotes
-            const HINDI_QUOTES_API = "https://hindi-quotes.vercel.app/random";
-            
-            // Festival data
+            // Festivals
             const festivals = {
-                '01-14': { name: 'Makar Sankranti' },
-                '01-26': { name: 'Republic Day' },
-                '03-08': { name: 'Holi' },
-                '08-15': { name: 'Independence Day' },
-                '10-24': { name: 'Diwali' },
-                '11-12': { name: 'Guru Nanak Jayanti' }
+                '01-14': 'Makar Sankranti', '01-26': 'Republic Day',
+                '03-08': 'Holi', '08-15': 'Independence Day',
+                '10-24': 'Diwali', '11-12': 'Guru Nanak Jayanti'
             };
 
-            // Default quotes for non-festival days (fallback)
-            const defaultQuotes = [
-                {text: "जीवन में सफलता पाने के लिए हिम्मत और धैर्य की आवश्यकता होती है।", author: "अटल बिहारी वाजपेयी"},
-                {text: "असंभव कुछ भी नहीं, हर कठिनाई के बाद सफलता जरूर मिलती है।", author: "स्वामी विवेकानंद"},
-                {text: "मेहनत इतनी खामोशी से करो कि सफलता शोर मचा दे।", author: "अज्ञात"}
-            ];
+            // Time-based wishing
+            const wishingQuotes = {
+                morning:   { icon: '🌅', label: 'Good Morning',   quotes: ['सुप्रभात! 🌸 हर सुबह एक नई शुरुआत है — आज का दिन आपका हो।', 'सुप्रभात! ☀️ उठो, जागो और अपने सपनों की ओर बढ़ो।', 'सुप्रभात! 🌻 नई सुबह, नई उम्मीद — आज कुछ नया करो।'] },
+                noon:      { icon: '☀️', label: 'Good Noon',      quotes: ['शुभ दोपहर! 🌞 दिन का आधा सफर तय हो गया — बाकी भी शानदार होगा।', 'शुभ दोपहर! 🍀 थोड़ा रुको, सांस लो — और फिर पूरी ताकत से आगे बढ़ो।', 'शुभ दोपहर! ✨ मेहनत जारी रखो, मंजिल दूर नहीं है।'] },
+                afternoon: { icon: '🌤️', label: 'Good Afternoon', quotes: ['शुभ अपराह्न! 🌼 हर पल को खास बनाओ — यही जिंदगी की सुंदरता है।', 'शुभ अपराह्न! 💪 थकान मत मानो, लक्ष्य करीब है।', 'शुभ अपराह्न! 🌈 अच्छे कर्म करते रहो, अच्छा समय जरूर आएगा।'] },
+                evening:   { icon: '🌇', label: 'Good Evening',   quotes: ['शुभ संध्या! 🌆 दिन भर की मेहनत का फल जरूर मिलेगा।', 'शुभ संध्या! 🌙 शाम को सुकून दो अपने मन को — कल फिर नई शुरुआत होगी।', 'शुभ संध्या! 🕊️ आज का दिन बेहतरीन रहा — इसके लिए खुद को शुक्रिया कहो।'] },
+                night:     { icon: '🌙', label: 'Good Night',     quotes: ['शुभ रात्रि! 🌟 आज जो किया वो काफी है — चैन से सोओ, कल और बेहतर होगा।', 'शुभ रात्रि! 💫 सपने देखो बड़े — क्योंकि वही कल की हकीकत बनते हैं।', 'शुभ रात्रि! 🌛 रात की खामोशी में खुद से बात करो — जवाब मिल जाएगा।'] }
+            };
 
-            // DOM elements
-            const currentDateEl = document.getElementById('current-date');
-            const currentFestivalEl = document.getElementById('current-festival');
-            const quoteTextEl = document.getElementById('quote-text');
-            const quoteAuthorEl = document.getElementById('quote-author');
-            const newQuoteBtn = document.getElementById('new-quote');
-            const shareQuoteBtn = document.getElementById('share-quote');
-            const copyBtn = document.querySelector('.copy-btn');
-            const loadingSpinner = document.getElementById('loading-spinner');
+            function getTimePeriod() {
+                const h = new Date().getHours();
+                if (h >= 5 && h < 12) return 'morning';
+                if (h >= 12 && h < 13) return 'noon';
+                if (h >= 13 && h < 17) return 'afternoon';
+                if (h >= 17 && h < 21) return 'evening';
+                return 'night';
+            }
 
-            // Set current date and festival
-            function updateDateAndFestival() {
+            function init() {
                 const today = new Date();
-                const monthDay = `${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                
-                currentDateEl.textContent = today.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
+                const monthDay = `${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+                document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-                if (festivals[monthDay]) {
-                    currentFestivalEl.textContent = festivals[monthDay].name;
-                } else {
-                    currentFestivalEl.textContent = "Daily Wisdom";
-                }
+                const festEl = document.getElementById('current-festival');
+                if (festivals[monthDay]) { festEl.textContent = festivals[monthDay]; festEl.style.display = ''; }
+                else { festEl.style.display = 'none'; }
+
+                const period = getTimePeriod();
+                const wd = wishingQuotes[period];
+                document.getElementById('wishing-icon').textContent = wd.icon;
+                document.getElementById('wishing-text').textContent = wd.quotes[Math.floor(Math.random() * wd.quotes.length)];
+                document.getElementById('time-greeting').textContent = wd.label;
             }
 
-            // Show loading state
-            function showLoading() {
-                quoteTextEl.style.visibility = 'hidden';
-                quoteAuthorEl.style.visibility = 'hidden';
-                loadingSpinner.style.display = 'block';
+            // DOM refs
+            const quoteTextEl   = document.getElementById('quote-text');
+            const quoteAuthorEl = document.getElementById('quote-author');
+            const quoteTypeEl   = document.getElementById('quote-type');
+            const spinner       = document.getElementById('loading-spinner');
+            const copyBtn       = document.querySelector('.copy-btn');
+
+            function showLoading() { quoteTextEl.style.visibility='hidden'; quoteAuthorEl.style.visibility='hidden'; quoteTypeEl.style.visibility='hidden'; spinner.style.display='block'; }
+            function hideLoading() { quoteTextEl.style.visibility='visible'; quoteAuthorEl.style.visibility='visible'; quoteTypeEl.style.visibility='visible'; spinner.style.display='none'; }
+
+            function animateQuote(text, author, type) {
+                [quoteTextEl, quoteAuthorEl, quoteTypeEl].forEach(el => el.classList.remove('fade-in'));
+                setTimeout(() => {
+                    quoteTextEl.textContent = text;
+                    quoteAuthorEl.textContent = '— ' + author;
+                    quoteTypeEl.textContent = 'Type: ' + type;
+                    [quoteTextEl, quoteAuthorEl, quoteTypeEl].forEach(el => el.classList.add('fade-in'));
+                }, 200);
             }
 
-            // Hide loading state
-            function hideLoading() {
-                quoteTextEl.style.visibility = 'visible';
-                quoteAuthorEl.style.visibility = 'visible';
-                loadingSpinner.style.display = 'none';
-            }
-
-            // Fetch quote from API
+            // Claude API se Hindi quote generate karo
             async function fetchHindiQuote() {
+                showLoading();
                 try {
-                    showLoading();
-                    
-                    const response = await fetch(HINDI_QUOTES_API);
-                    if (!response.ok) throw new Error('API Error');
-                    
-                    const data = await response.json();
-                    animateQuoteChange(data.quote, data.author || "अज्ञात");
-                } catch (error) {
-                    console.error("Error fetching quote:", error);
-                    // Fallback to default quotes
-                    const randomQuote = defaultQuotes[Math.floor(Math.random() * defaultQuotes.length)];
-                    animateQuoteChange(randomQuote.text, randomQuote.author);
+                    const res = await fetch("https://api.anthropic.com/v1/messages", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            model: "claude-sonnet-4-20250514",
+                            max_tokens: 300,
+                            system: `You are a Hindi quotes generator. Return ONLY a valid JSON object with exactly these 3 keys:
+- "quote": a meaningful Hindi quote (in Devanagari script)
+- "author": the author name in Hindi (use "अज्ञात" if unknown)
+- "type": the category in Hindi (e.g. प्रेरणा, प्रेम, जीवन, दोस्ती, सफलता, etc.)
+
+Return ONLY the JSON object. No markdown, no extra text.`,
+                            messages: [{ role: "user", content: "Give me a random Hindi quote." }]
+                        })
+                    });
+                    const data = await res.json();
+                    const raw = data.content.map(b => b.text || '').join('').trim();
+                    const clean = raw.replace(/```json|```/g, '').trim();
+                    const parsed = JSON.parse(clean);
+                    animateQuote(
+                        parsed.quote  || 'मेहनत इतनी खामोशी से करो कि सफलता शोर मचा दे।',
+                        parsed.author || 'अज्ञात',
+                        parsed.type   || 'अज्ञात'
+                    );
+                } catch (err) {
+                    console.error(err);
+                    animateQuote('मेहनत इतनी खामोशी से करो कि सफलता शोर मचा दे।', 'अज्ञात', 'प्रेरणा');
                 } finally {
                     hideLoading();
                 }
             }
 
-            // Animate quote change
-            function animateQuoteChange(text, author) {
-                quoteTextEl.classList.remove('fade-in');
-                quoteAuthorEl.classList.remove('fade-in');
-                
-                setTimeout(() => {
-                    quoteTextEl.textContent = text;
-                    quoteAuthorEl.textContent = author;
-                    
-                    quoteTextEl.classList.add('fade-in');
-                    quoteAuthorEl.classList.add('fade-in');
-                }, 200);
-            }
-
-            // Copy quote to clipboard
             function copyToClipboard() {
-                const textToCopy = `"${quoteTextEl.textContent}" - ${quoteAuthorEl.textContent}`;
-                
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    // Show toast notification
+                const txt = `"${quoteTextEl.textContent}" ${quoteAuthorEl.textContent} | ${quoteTypeEl.textContent}`;
+                navigator.clipboard.writeText(txt).then(() => {
                     toast.show();
-                    
-                    // Visual feedback on copy button
-                    const copyIcon = copyBtn.querySelector('i');
-                    copyIcon.classList.replace('fa-copy', 'fa-check');
+                    const icon = copyBtn.querySelector('i');
+                    icon.classList.replace('fa-copy','fa-check');
                     copyBtn.classList.add('copied');
-                    
-                    setTimeout(() => {
-                        copyIcon.classList.replace('fa-check', 'fa-copy');
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Copy failed:', err);
-                    alert('Copy failed. Please try again or check browser permissions.');
-                });
+                    setTimeout(() => { icon.classList.replace('fa-check','fa-copy'); copyBtn.classList.remove('copied'); }, 2000);
+                }).catch(() => alert('Copy failed. Please try again.'));
             }
 
-            // Share quote
             function shareQuote() {
-                const shareText = `"${quoteTextEl.textContent}" - ${quoteAuthorEl.textContent}`;
-                
+                const txt = `"${quoteTextEl.textContent}" ${quoteAuthorEl.textContent}`;
                 if (navigator.share) {
-                    navigator.share({
-                        title: 'Hindi Quote',
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(err => {
-                        console.log('Error sharing:', err);
-                        // Fallback to copy if share fails
-                        copyToClipboard();
-                    });
-                } else {
-                    // Fallback for browsers that don't support Web Share API
-                    copyToClipboard();
-                }
+                    navigator.share({ title: 'Hindi Quote', text: txt, url: window.location.href }).catch(() => copyToClipboard());
+                } else { copyToClipboard(); }
             }
 
-            // Initialize
-            updateDateAndFestival();
+            init();
             fetchHindiQuote();
 
-            // Event listeners
-            newQuoteBtn.addEventListener('click', fetchHindiQuote);
+            document.getElementById('new-quote').addEventListener('click', fetchHindiQuote);
             copyBtn.addEventListener('click', copyToClipboard);
-            shareQuoteBtn.addEventListener('click', shareQuote);
+            document.getElementById('share-quote').addEventListener('click', shareQuote);
         });
     </script>
 </body>
